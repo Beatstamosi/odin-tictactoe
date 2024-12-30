@@ -1,14 +1,11 @@
 // GameBoard Object
-function GameBoard () {
+const board = function() {
     // define rows, columns
     const rows = 3;
     const columns = 3;
 
     // create array for board and fill with values of 0
     const board = Array.from({ length: rows}, () => Array(columns).fill(0));
-
-    // getBoard function
-    const getBoard = () => board;
 
     // setToken function
     const setToken = function (player, row, column) {
@@ -31,18 +28,32 @@ function GameBoard () {
         
 
     return {
-        getBoard,
         setToken,
         printBoard
     }
-}
+}();
     
 
 
-// Player Object
-    // take playername as input; set default name
-    // create Player Array with name + token / sign
-    // return player Array
+// Players Object
+function Players (playerOne = "Player 1", playerTwo = "Player 2") {
+    const players = [
+        {
+            name: playerOne,
+            token: "X"
+        },
+        {
+            name: playerTwo,
+            token: "O"
+        }
+    ];
+
+    const getPlayers = () => players;
+    
+    return {
+        getPlayers
+    }
+}
 
 
 // GameController Object
