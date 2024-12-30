@@ -1,23 +1,42 @@
 // GameBoard Object
+function GameBoard () {
     // define rows, columns
-    // create empty array for board
+    const rows = 3;
+    const columns = 3;
 
-    // fill array with values of 0
+    // create array for board and fill with values of 0
+    const board = Array.from({ length: rows}, () => Array(columns).fill(0));
 
     // getBoard function
-        // gets board array
+    const getBoard = () => board;
 
     // setToken function
+    const setToken = function (player, row, column) {
         // takes player and array index as input
         // if value != 0, console.log error, return
-        // changes value to player
+        if (board[row][column] === 0) {
+            // changes value to player
+            board[row][column] = player;
+        } else {
+            console.log("Spot already marked");
+            return
+        }
+        
+    }
 
     // printBoard function
-        // loops through board array
-        // console.log values of each index
-        // console.log borders
+    const printBoard = function () {
+        console.log(board.map(row => row.join("|")).join("\n-----\n"));
+    }
+        
 
-    // return 3 functions
+    return {
+        getBoard,
+        setToken,
+        printBoard
+    }
+}
+    
 
 
 // Player Object
