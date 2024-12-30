@@ -100,19 +100,44 @@ function GameController () {
             return value === "O"
         }
 
-        boardArray.forEach(row => {
-            // check if winner in row
+        const checkWinner = function () {
+            // create array for each column
+            const columns = {
+                column0: [],
+                column1: [],
+                column2: [],
+            }
+            
+            boardArray.forEach(row => {
+                // check if winner in row
 
-            if (row.every(checkPlayer1Win)) {
-                console.log("Player 1 wins!")
-                return
-            } else if (row.every(checkPlayer2Win)) {
-                console.log("Player 2 wins!")
-                return
-            } 
+                if (row.every(checkPlayer1Win)) {
+                    console.log("Player 1 wins!")
+                    return "Winner found"
+                } else if (row.every(checkPlayer2Win)) {
+                    console.log("Player 2 wins!")
+                    return "Winner found"
+                } 
 
-        })
+                // check columns
+                row.forEach((column, index) => {
+                    columns[`column${index}`].push(column);
+                })
+            });
 
+            if (columns.column0.every(checkPlayer1Win) || columns.column1.every(checkPlayer1Win) || columns.column2.every(checkPlayer1Win)) {
+                console.log("Player 1 wins!");
+                return "Winner found"
+            } else if (columns.column0.every(checkPlayer2Win) || columns.column1.every(checkPlayer2Win) || columns.column2.every(checkPlayer2Win)) {
+                console.log("Player 2 wins!");
+                return "Winner found"
+            }
+        }
+        
+        if (checkWinner() === "Winner found") {
+            board.printBoard();
+            return
+        };
 
         // switch player turn
         switchPlayerTurn();
