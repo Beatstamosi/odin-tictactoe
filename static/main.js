@@ -115,7 +115,7 @@ function GameController () {
                     return "1"
                 } else if (row.every(checkPlayer2Win)) {
                     return "2"
-                } 
+                }
 
                 // if no winner found add values to columns
                 row.forEach((column, index) => {
@@ -142,19 +142,28 @@ function GameController () {
                 return "2";
             }
 
-
             // check for a draw --> all values are not 0 in boardArray
+            const flattenedBoard = boardArray.flat();
 
-
-            // return nothing
+            if (!flattenedBoard.some((value) => value === 0)) {
+                return "3";
+            }
+            
+            // no winner / no draw yet
             return false
         }
         
-        if (checkWinner()) {
-            const winner = checkWinner();
-            let winnerMessage = winner === "1" ? "Player 1 wins!" : "Player 2 wins!";
+        const winner = checkWinner();
+
+        if (winner) {
             board.printBoard();
-            console.log(winnerMessage);
+            if (winner === "1") {
+                console.log("Player 1 wins!");
+            } else if (winner === "2") {
+                console.log("Player 2 wins!");
+            } else {
+                console.log("It's a Draw!");
+            }
             return
         }
 
