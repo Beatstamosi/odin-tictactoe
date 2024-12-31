@@ -11,15 +11,14 @@ const board = function() {
     const getBoard = () => board;
 
     // setToken function
-    const setToken = function (player, row, column) {
+    const setToken = function (playerToken, row, column) {
         // takes player and array index as input
         // if value != 0, console.log error, return
         if (board[row][column] === 0) {
             // changes value to player
-            board[row][column] = player;
+            board[row][column] = playerToken;
         } else {
             console.log("Spot already marked");
-            return
         }
         
     }
@@ -89,18 +88,18 @@ function GameController () {
         board.setToken(getActivePlayer().token, row, column);
 
         // check for winner
-        const boardArray = board.getBoard();
-        
-        // check for winner in row
-        const checkPlayer1Win = function (value) {
-            return value === "X"
-        }
-
-        const checkPlayer2Win = function (value) {
-            return value === "O"
-        }
-
         const checkWinner = function () {
+            const boardArray = board.getBoard();
+        
+            // allow .every() to check if all values are the same
+            const checkPlayer1Win = function (value) {
+                return value === "X"
+            }
+
+            const checkPlayer2Win = function (value) {
+                return value === "O"
+            }
+
             // create array for each column
             const columns = {
                 column0: [],
@@ -108,36 +107,56 @@ function GameController () {
                 column2: [],
             }
             
-            boardArray.forEach(row => {
-                // check if winner in row
+            // check if winner in row
+            for (let i = 0; i < boardArray.length; i++) {
+                let row = boardArray[i];
 
                 if (row.every(checkPlayer1Win)) {
-                    console.log("Player 1 wins!")
-                    return "Winner found"
+                    return "1"
                 } else if (row.every(checkPlayer2Win)) {
-                    console.log("Player 2 wins!")
-                    return "Winner found"
+                    return "2"
                 } 
 
-                // check columns
+                // if no winner found add values to columns
                 row.forEach((column, index) => {
                     columns[`column${index}`].push(column);
                 })
-            });
-
-            if (columns.column0.every(checkPlayer1Win) || columns.column1.every(checkPlayer1Win) || columns.column2.every(checkPlayer1Win)) {
-                console.log("Player 1 wins!");
-                return "Winner found"
-            } else if (columns.column0.every(checkPlayer2Win) || columns.column1.every(checkPlayer2Win) || columns.column2.every(checkPlayer2Win)) {
-                console.log("Player 2 wins!");
-                return "Winner found"
             }
+                
+            // check if winner in column
+            for (let i = 0; i < Object.keys(columns).length; i++) {
+                if (columns[`column${i}`].every(checkPlayer1Win)) {
+                    return "1";
+                } else if (columns[`column${i}`].every(checkPlayer2Win)) {
+                    return "2";
+                }
+            }
+ 
+            // check diagonal
+            const diag1 = [boardArray[0][0], boardArray[1][1], boardArray[2][2]];
+            const diag2 = [boardArray[0][2], boardArray[1][1], boardArray[2][0]];
+
+            if (diag1.every(checkPlayer1Win) || diag2.every(checkPlayer1Win)) {
+                return "1";
+            } else if (diag1.every(checkPlayer2Win) || diag2.every(checkPlayer2Win)) {
+                return "2";
+            }
+
+
+            // check for a draw --> all values are not 0 in boardArray
+
+
+            // return nothing
+            return false
         }
         
-        if (checkWinner() === "Winner found") {
+        if (checkWinner()) {
+            const winner = checkWinner();
+            let winnerMessage = winner === "1" ? "Player 1 wins!" : "Player 2 wins!";
             board.printBoard();
+            console.log(winnerMessage);
             return
-        };
+        }
 
         // switch player turn
         switchPlayerTurn();
