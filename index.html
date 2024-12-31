@@ -6,8 +6,30 @@
     <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="static/styles.css">
     <script src="static/main.js" defer></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anton+SC&family=Jersey+15&family=Orbitron:wght@500&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+    </style>
 </head>
 <body>
-    
+    <div class="start-view">
+        <p>The all time classic</p>
+        <h1><span id="tic-header">Tic</span> <span id="tac-header">Tac</span> <span id="toe-header">Toe</span></h1>
+        <div class="container-input-user-name">
+            <form action="">
+                <div>
+                    <label for="playerOne">Player One</label>
+                    <input type="text" name="playerOne" id="playerOne-input" placeholder="Enter Name">
+                </div>
+                <div>
+                    <label for="playerTwo">Player Two</label>
+                    <input type="text" name="playerTwo" id="playerTwo-input" placeholder="Enter Name">
+                </div>
+                <button type="submit">Start Game</button>
+            </form>
+        </div>
+    </div>
+    <div class="game-view">
+
+    </div>
 </body>
 </html>

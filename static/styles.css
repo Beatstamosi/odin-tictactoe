@@ -1,0 +1,103 @@
+:root {
+    --red: #ff073a;
+    --green: #39FF14;
+    --yellow: #FFFF33;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Jersey 15", serif;
+    font-weight: 400;
+    font-style: normal;
+    background-color: black;
+    color: white;
+}
+
+.start-view {
+    height: 100vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.start-view p {
+    font-size: 30px;
+}
+
+.start-view h1 {
+    font-size: 200px;
+    margin-bottom: 30px;
+}
+
+#tic-header {
+    color: var(--red);
+}
+
+#tac-header {
+    color: var(--yellow);
+}
+
+#toe-header {
+    color: var(--green);
+}
+
+.container-input-user-name form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-size: 25px;
+}
+
+.container-input-user-name form input {
+    font-size: 20px;
+    margin-left: 10px;
+    padding: 5px 10px;
+}
+
+#playerOne-input {
+    color: var(--red);
+}
+
+#playerTwo-input {
+    color: var(--green);
+}
+
+.container-input-user-name form button {
+    width: 200px;
+    background-color: white;
+    color: black;
+    padding: 5px 20px;
+    font-size: 30px;
+    margin-top: 20px;
+
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+    transform: scale(1);
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+    }
+
+    70% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+}
+
+.container-input-user-name form button:hover {
+    cursor: pointer;
+    background-color: var(--yellow);
+}

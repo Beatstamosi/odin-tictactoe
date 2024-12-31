@@ -181,8 +181,6 @@ function GameController () {
     }
         
 }
-    
-
 
 
 // ScreenController Object
