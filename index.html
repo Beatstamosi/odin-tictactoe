@@ -28,8 +28,34 @@
             </form>
         </div>
     </div>
-    <div class="game-view">
 
+    <div class="game-view">
+        <div class="column1">
+            <h2>Player One</h2>
+            <p>X</p>
+            <p>Rounds Won: <span id="player-1-score"></span></p>
+        </div>
+        <div class="column2">
+            <div class="display">
+                <span>Player 1 Turn</span>
+            </div>
+            <div class="grid">
+                <button class="grid-cell top-left">X</button>
+                <button class="grid-cell top-center">O</button>
+                <button class="grid-cell top-right">X</button>
+                <button class="grid-cell middle-left">X</button>
+                <button class="grid-cell middle-center">O</button>
+                <button class="grid-cell middle-right">O</button>
+                <button class="grid-cell bottom-left">O</button>
+                <button class="grid-cell bottom-center">X</button>
+                <button class="grid-cell bottom-right">X</button>
+            </div>
+        </div>
+        <div class="column3">
+            <h2>Player Two</h2>
+            <p>O</p>
+            <p>Rounds Won: <span id="player-2-score"></span></p>
+        </div>
     </div>
 </body>
 </html>

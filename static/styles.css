@@ -57,6 +57,7 @@
     font-size: 20px;
     margin-left: 10px;
     padding: 5px 10px;
+    text-transform: uppercase;
 }
 
 #playerOne-input {
@@ -100,4 +101,116 @@
 .container-input-user-name form button:hover {
     cursor: pointer;
     background-color: var(--yellow);
+}
+
+.game-view {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    justify-items: center;
+    padding-top: 50px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.column1, .column3 {
+    justify-items: left;
+}
+
+.column2 {
+    justify-items: center;
+}
+
+.column1 h2, .column3 h2 {
+    font-size: 50px;
+    text-transform: uppercase;
+}
+
+.column1 p, .column3 p {
+    font-size: 40px;
+}
+
+.column1 p:last-of-type, .column3 p:last-of-type {
+    font-size: 25px;
+}
+
+.column1 h2 {
+    color: var(--red);
+}
+
+.column3 h2 {
+    color: var(--green)
+}
+
+.display {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.display span {
+    color: var(--red);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.grid button {
+    width: 200px;
+    height: 200px;
+    font-size: 16em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.top-left {
+    border: 1px solid var(--yellow);
+    border-top: none;
+    border-left: none;
+}
+
+.top-center {
+    border: 1px solid var(--yellow);
+    border-top: none;
+}
+
+.top-right {
+    border-bottom: 1px solid var(--yellow);
+    border-top: none;
+    border-right: none;
+}
+
+.middle-left {
+    border: 1px solid var(--yellow);
+    border-left: none;
+}
+
+.middle-center {
+    border: 1px solid var(--yellow);
+}
+
+.middle-right {
+    border: 1px solid var(--yellow);
+    border-right: none;
+}
+
+.bottom-left {
+    border: 1px solid var(--yellow);
+    border-left: none;
+    border-bottom: none;
+}
+
+.bottom-center {
+    border: 1px solid var(--yellow);
+    border-bottom: none;
+}
+
+.bottom-right {
+    border: 1px solid var(--yellow);
+    border-bottom: none;
+    border-right: none;
 }
