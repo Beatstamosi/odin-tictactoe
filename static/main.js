@@ -44,12 +44,14 @@ function Players (playerOne, playerTwo) {
         {
             name: playerOne,
             token: "X",
-            player: 1
+            player: 1,
+            roundsWon: 0,
         },
         {
             name: playerTwo,
             token: "O",
-            player: 2
+            player: 2,
+            roundsWon: 0,
         }
     ];
 
@@ -185,7 +187,8 @@ function GameController (playerOne = "Player 1", playerTwo = "Player 2") {
     return {
         playRound,
         getActivePlayer,
-        winner
+        winner,
+        players
     }
         
 }
@@ -201,7 +204,9 @@ function ScreenController () {
     const playerOneInput = document.querySelector("#playerOne-input");
     const playerTwoInput = document.querySelector("#playerTwo-input");
     const displayTurnInfo = document.querySelector(".display span");
-
+    const playerOneScore = document.querySelector("#player-1-score");
+    const playerTwoScore = document.querySelector("#player-2-score");
+    
     let game;
 
     // Start Game and set up display of player names
@@ -217,6 +222,9 @@ function ScreenController () {
 
         playerNameOneDisplay.textContent = playerOneName ? playerOneName : "PLAYER 1";
         playerNameTwoDisplay.textContent = playerTwoName ? playerTwoName : "PLAYER 2";
+
+        playerOneScore.textContent = game.players[0].roundsWon;
+        playerTwoScore.textContent = game.players[1].roundsWon;
 
         updateTurnDisplay();
     }
@@ -286,7 +294,6 @@ function ScreenController () {
         button.textContent = `${token}`;
         game.playRound(row, column);
 
-
         updateTurnDisplay();
 
         button.removeEventListener("mouseleave", hideTokenOnHoverOut);
@@ -296,6 +303,11 @@ function ScreenController () {
     };
 
 
+    if (game.winner) {
+        const winner = game.winner;
+
+
+    }
     // update winner
         // get game result and update value in display player turn
         // make buttons pulse 3 times
