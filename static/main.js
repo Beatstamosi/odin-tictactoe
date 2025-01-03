@@ -271,6 +271,7 @@ function ScreenController () {
     function showTokenOnHover (button) {
         if (!button.classList.contains("clicked")) {
             button.textContent = `${game.getActivePlayer().token}`;
+            button.style.color = game.getActivePlayer().token === "X" ? "rgba(255, 7, 58, 0.4" : "rgba(57, 255, 20, 0.4";
         }
     }
 
@@ -303,11 +304,6 @@ function ScreenController () {
     };
 
 
-    if (game.winner) {
-        const winner = game.winner;
-
-
-    }
     // update winner
         // get game result and update value in display player turn
         // make buttons pulse 3 times
