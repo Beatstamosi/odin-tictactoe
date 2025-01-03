@@ -184,3 +184,33 @@ function GameController () {
 
 
 // ScreenController Object
+function ScreenController () {
+    // add datasets to buttons via html
+
+    // handle start game button
+        // add eventlistener
+        // set display of start-view to none
+        // set display of game-view to grid(?)
+        // get player names and update value
+
+
+    // update display for player turn
+        // get active player and update value
+    
+    // update winner
+        // get game result and update value in display player turn
+        // make buttons pulse 3 times
+        // increase score "Rounds Won:"
+        // pop up play again
+
+    // play again button
+        // resets board
+    
+
+    // add click handler to each button
+        // on button click set value to active players token
+        // run playRound();
+        // once clicked, remove event handler
+
+
+}

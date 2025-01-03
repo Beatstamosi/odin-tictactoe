@@ -167,6 +167,11 @@
     align-items: center;
 }
 
+.grid button:empty:hover {
+    background-color: rgba(230, 230, 230, 0.2);
+    cursor: pointer;
+}
+
 .top-left {
     border: 1px solid var(--yellow);
     border-top: none;
