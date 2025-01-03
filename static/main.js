@@ -5,7 +5,7 @@ const board = function() {
     const columns = 3;
 
     // create array for board and fill with values of 0
-    const board = Array.from({ length: rows}, () => Array(columns).fill(0));
+    let board = Array.from({ length: rows}, () => Array(columns).fill(0));
 
     // getBoard function
     const getBoard = () => board;
@@ -27,12 +27,12 @@ const board = function() {
     const printBoard = function () {
         console.log(board.map(row => row.join("|")).join("\n-----\n"));
     }
-        
+ 
 
     return {
         getBoard,
         setToken,
-        printBoard
+        printBoard,
     }
 }();
     
@@ -90,6 +90,12 @@ function GameController (playerOne = "Player 1", playerTwo = "Player 2") {
     const playRound = function (row, column) {
         // setToken
         board.setToken(getActivePlayer().token, row, column);
+
+        let winner = checkWinner();
+
+        if (winner) {
+            return winner
+        }
 
         // switch player turn
         switchPlayerTurn();
@@ -180,10 +186,8 @@ function GameController (playerOne = "Player 1", playerTwo = "Player 2") {
     return {
         playRound,
         getActivePlayer,
-        checkWinner,
         players
     }
-        
 }
 
 
@@ -287,8 +291,7 @@ function ScreenController () {
         setFontColor(button);
 
         button.textContent = `${token}`;
-        game.playRound(row, column);
-        winner = game.checkWinner();
+        winner = game.playRound(row, column);
         
         updateTurnDisplay();
 
@@ -298,7 +301,6 @@ function ScreenController () {
 
         button.removeEventListener("mouseleave", hideTokenOnHoverOut);
         button.removeEventListener("mouseenter", showTokenOnHover);
-
         button.removeEventListener("click", gridCellClicked);
     };
 
@@ -308,7 +310,7 @@ function ScreenController () {
         if (winner === "1") {
             message = `${game.players[0].name} wins!`
             playerOneScore.textContent = game.players[0].roundsWon;
-        } else if (winner === "3") {
+        } else if (winner === "2") {
             message = `${game.players[1].name} wins!`
             playerTwoScore.textContent = game.players[1].roundsWon;
         } else {
@@ -316,16 +318,32 @@ function ScreenController () {
         }
 
         displayTurnInfo.textContent = message;
+        displayTurnInfo.style.fontSize = "50px";
         setFontColor(displayTurnInfo);
 
-        document.body.replaceWith(document.body.cloneNode(true));
+        const allGridButtons = Array.from(document.querySelectorAll(".grid-cell"));
+        allGridButtons.forEach(button => {
+            button.removeEventListener("mouseleave", hideTokenOnHoverOut);
+            button.removeEventListener("mouseenter", showTokenOnHover);
+            button.removeEventListener("click", gridCellClicked);
+        })
 
+        // createPlayAgainButton();
     }
 
-    // play again button
-        // resets board
+    // function createPlayAgainButton () {
+    //     // add button to body
+    //     const playAgainBtn = document.createElement("button");
+    //     playAgainBtn.id = "play-again";
 
+    //     // add to column3
+    //     document.querySelector(".column1").appendChild(playAgainBtn);
 
+    //     // add eventlistener
+    //     playAgainBtn.addEventListener("click", board.resetBoard);
+
+    //     // call ScreenController
+    // }
 }
 
 ScreenController();

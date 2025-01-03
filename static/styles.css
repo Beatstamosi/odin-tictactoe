@@ -227,3 +227,11 @@
 #player-2-token {
     color: var(--green);
 }
+
+#play-again {
+    font-size: 20px;
+    color: black;
+    background-color: var(--yellow);
+    padding: 5px 10px;
+    cursor: pointer;
+}
