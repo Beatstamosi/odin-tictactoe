@@ -43,11 +43,13 @@ function Players (playerOne, playerTwo) {
     const players = [
         {
             name: playerOne,
-            token: "X"
+            token: "X",
+            player: 1
         },
         {
             name: playerTwo,
-            token: "O"
+            token: "O",
+            player: 2
         }
     ];
 
@@ -61,6 +63,8 @@ function Players (playerOne, playerTwo) {
 
 // GameController Object
 function GameController (playerOne = "Player 1", playerTwo = "Player 2") {
+    let winner;
+
     // initiate players
     const players = Players(playerOne, playerTwo).getPlayers();
 
@@ -153,19 +157,21 @@ function GameController (playerOne = "Player 1", playerTwo = "Player 2") {
             return false
         }
         
-        const winner = checkWinner();
+        winner = checkWinner();
+        
 
-        if (winner) {
-            board.printBoard();
-            if (winner === "1") {
-                console.log("Player 1 wins!");
-            } else if (winner === "2") {
-                console.log("Player 2 wins!");
-            } else {
-                console.log("It's a Draw!");
-            }
-            return
-        }
+        // console.log game logic
+        // if (winner) {
+        //     board.printBoard();
+        //     if (winner === "1") {
+        //         console.log("Player 1 wins!");
+        //     } else if (winner === "2") {
+        //         console.log("Player 2 wins!");
+        //     } else {
+        //         console.log("It's a Draw!");
+        //     }
+        //     return
+        // }
 
         // switch player turn
         switchPlayerTurn();
@@ -179,6 +185,7 @@ function GameController (playerOne = "Player 1", playerTwo = "Player 2") {
     return {
         playRound,
         getActivePlayer,
+        winner
     }
         
 }
@@ -217,6 +224,15 @@ function ScreenController () {
         clickStartButton(e));
 
 
+    function setFontColor (element) {
+        const player = game.getActivePlayer().player;
+        // set font-color to players color
+        if (player === 1) {
+            element.style.color = "var(--red)";
+        } else {
+            element.style.color = "var(--green)";
+        }
+    }
 
     function updateTurnDisplay() {
         // set name to player turns name
@@ -224,37 +240,60 @@ function ScreenController () {
         console.log(activePlayer);
         displayTurnInfo.textContent = `${activePlayer.name}'s Turn`;
 
-        // set font-color to players color
-        if (activePlayer.token === "X") {
-            displayTurnInfo.style.color = "var(--red)";
-        } else {
-            displayTurnInfo.style.color = "var(--green)";
-        }
+        setFontColor(displayTurnInfo);
     }
     
-    // make gridCells perform action on click
+    // make gridCells perform action on click and hover
     const buttons = Array.from(document.querySelectorAll(".grid-cell"));
 
     buttons.forEach(button => {
-        button.addEventListener("click", (event) => {
+        button.addEventListener("click", () => {
             gridCellClicked(button)
-        })
+        });
+
+        button.addEventListener("mouseenter", () => {
+            showTokenOnHover(button);
+        });
+
+        button.addEventListener("mouseleave", () => {
+            hideTokenOnHoverOut(button);
+        });
     })
 
+    function showTokenOnHover (button) {
+        if (!button.classList.contains("clicked")) {
+            button.textContent = `${game.getActivePlayer().token}`;
+        }
+    }
+
+    function hideTokenOnHoverOut (button) {
+        if (!button.classList.contains("clicked")) {
+            button.textContent = "";
+        };
+    }
+
     function gridCellClicked (button) {
+        // to avoid hover function to trigger
+        button.classList.add("clicked");
+
         // get dataset of button
         let row = button.dataset.row;
         let column = button.dataset.column;
 
-        button.textContent = game.getActivePlayer().token;
+        const token = game.getActivePlayer().token;
+        setFontColor(button);
+
+        button.textContent = `${token}`;
         game.playRound(row, column);
+
 
         updateTurnDisplay();
 
+        button.removeEventListener("mouseleave", hideTokenOnHoverOut);
+        button.removeEventListener("mouseenter", showTokenOnHover);
+
         button.removeEventListener("click", gridCellClicked);
     };
-
-
 
 
     // update winner
