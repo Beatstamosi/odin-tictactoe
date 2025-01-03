@@ -65,8 +65,6 @@ function Players (playerOne, playerTwo) {
 
 // GameController Object
 function GameController (playerOne = "Player 1", playerTwo = "Player 2") {
-    let winner;
-
     // initiate players
     const players = Players(playerOne, playerTwo).getPlayers();
 
@@ -93,88 +91,6 @@ function GameController (playerOne = "Player 1", playerTwo = "Player 2") {
         // setToken
         board.setToken(getActivePlayer().token, row, column);
 
-        // check for winner
-        const checkWinner = function () {
-            const boardArray = board.getBoard();
-        
-            // allow .every() to check if all values are the same
-            const checkPlayer1Win = function (value) {
-                return value === "X"
-            }
-
-            const checkPlayer2Win = function (value) {
-                return value === "O"
-            }
-
-            // create array for each column
-            const columns = {
-                column0: [],
-                column1: [],
-                column2: [],
-            }
-            
-            // check if winner in row
-            for (let i = 0; i < boardArray.length; i++) {
-                let row = boardArray[i];
-
-                if (row.every(checkPlayer1Win)) {
-                    return "1"
-                } else if (row.every(checkPlayer2Win)) {
-                    return "2"
-                }
-
-                // if no winner found add values to columns
-                row.forEach((column, index) => {
-                    columns[`column${index}`].push(column);
-                })
-            }
-                
-            // check if winner in column
-            for (let i = 0; i < Object.keys(columns).length; i++) {
-                if (columns[`column${i}`].every(checkPlayer1Win)) {
-                    return "1";
-                } else if (columns[`column${i}`].every(checkPlayer2Win)) {
-                    return "2";
-                }
-            }
- 
-            // check diagonal
-            const diag1 = [boardArray[0][0], boardArray[1][1], boardArray[2][2]];
-            const diag2 = [boardArray[0][2], boardArray[1][1], boardArray[2][0]];
-
-            if (diag1.every(checkPlayer1Win) || diag2.every(checkPlayer1Win)) {
-                return "1";
-            } else if (diag1.every(checkPlayer2Win) || diag2.every(checkPlayer2Win)) {
-                return "2";
-            }
-
-            // check for a draw --> all values are not 0 in boardArray
-            const flattenedBoard = boardArray.flat();
-
-            if (!flattenedBoard.some((value) => value === 0)) {
-                return "3";
-            }
-            
-            // no winner / no draw yet
-            return false
-        }
-        
-        winner = checkWinner();
-        
-
-        // console.log game logic
-        // if (winner) {
-        //     board.printBoard();
-        //     if (winner === "1") {
-        //         console.log("Player 1 wins!");
-        //     } else if (winner === "2") {
-        //         console.log("Player 2 wins!");
-        //     } else {
-        //         console.log("It's a Draw!");
-        //     }
-        //     return
-        // }
-
         // switch player turn
         switchPlayerTurn();
 
@@ -182,12 +98,89 @@ function GameController (playerOne = "Player 1", playerTwo = "Player 2") {
         printNewRound();
     }
 
+
+    // check for winner
+    const checkWinner = function () {
+        const boardArray = board.getBoard();
+    
+        // allow .every() to check if all values are the same
+        const checkPlayer1Win = function (value) {
+            return value === "X"
+        }
+
+        const checkPlayer2Win = function (value) {
+            return value === "O"
+        }
+
+        // create array for each column
+        const columns = {
+            column0: [],
+            column1: [],
+            column2: [],
+        }
+
+        function updateRoundsWon (player) {
+            player.roundsWon++;
+        }
+
+        // check if winner in row
+        for (let i = 0; i < boardArray.length; i++) {
+            let row = boardArray[i];
+
+            if (row.every(checkPlayer1Win)) {
+                updateRoundsWon(players[0]);
+                return "1"
+            } else if (row.every(checkPlayer2Win)) {
+                updateRoundsWon(players[1]);
+                return "2"
+            }
+
+            // if no winner found add values to columns
+            row.forEach((column, index) => {
+                columns[`column${index}`].push(column);
+            })
+        }
+            
+        // check if winner in column
+        for (let i = 0; i < Object.keys(columns).length; i++) {
+            if (columns[`column${i}`].every(checkPlayer1Win)) {
+                updateRoundsWon(players[0]);
+                return "1";
+            } else if (columns[`column${i}`].every(checkPlayer2Win)) {
+                updateRoundsWon(players[1]);
+                return "2";
+            }
+        }
+
+        // check diagonal
+        const diag1 = [boardArray[0][0], boardArray[1][1], boardArray[2][2]];
+        const diag2 = [boardArray[0][2], boardArray[1][1], boardArray[2][0]];
+
+        if (diag1.every(checkPlayer1Win) || diag2.every(checkPlayer1Win)) {
+            updateRoundsWon(players[0]);
+            return "1";
+        } else if (diag1.every(checkPlayer2Win) || diag2.every(checkPlayer2Win)) {
+            updateRoundsWon(players[1]);
+            return "2";
+        }
+
+        // check for a draw --> all values are not 0 in boardArray
+        const flattenedBoard = boardArray.flat();
+
+        if (!flattenedBoard.some((value) => value === 0)) {
+            return "3";
+        }
+        
+        // no winner / no draw yet
+        return false
+    }
+
     printNewRound();
 
     return {
         playRound,
         getActivePlayer,
-        winner,
+        checkWinner,
         players
     }
         
@@ -206,8 +199,8 @@ function ScreenController () {
     const displayTurnInfo = document.querySelector(".display span");
     const playerOneScore = document.querySelector("#player-1-score");
     const playerTwoScore = document.querySelector("#player-2-score");
-    
     let game;
+    let winner;
 
     // Start Game and set up display of player names
     function clickStartButton (e) {
@@ -219,6 +212,7 @@ function ScreenController () {
         const playerTwoName = playerTwoInput.value != "" ? playerTwoInput.value.toUpperCase() : undefined;
 
         game = GameController(playerOneName, playerTwoName);
+        console.log(`game.winner inside clickStartButton: ${game.winner}`);
 
         playerNameOneDisplay.textContent = playerOneName ? playerOneName : "PLAYER 1";
         playerNameTwoDisplay.textContent = playerTwoName ? playerTwoName : "PLAYER 2";
@@ -294,8 +288,13 @@ function ScreenController () {
 
         button.textContent = `${token}`;
         game.playRound(row, column);
-
+        winner = game.checkWinner();
+        
         updateTurnDisplay();
+
+        if (winner) {
+            displayWinner(winner);
+        }
 
         button.removeEventListener("mouseleave", hideTokenOnHoverOut);
         button.removeEventListener("mouseenter", showTokenOnHover);
@@ -303,13 +302,25 @@ function ScreenController () {
         button.removeEventListener("click", gridCellClicked);
     };
 
+    function displayWinner(winner) {
+        let message;
 
-    // update winner
-        // get game result and update value in display player turn
-        // make buttons pulse 3 times
-        // increase score "Rounds Won:"
-        // pop up play again
-        // remove all button eventlisteners
+        if (winner === "1") {
+            message = `${game.players[0].name} wins!`
+            playerOneScore.textContent = game.players[0].roundsWon;
+        } else if (winner === "3") {
+            message = `${game.players[1].name} wins!`
+            playerTwoScore.textContent = game.players[1].roundsWon;
+        } else {
+            message = "It's a Draw!"
+        }
+
+        displayTurnInfo.textContent = message;
+        setFontColor(displayTurnInfo);
+
+        document.body.replaceWith(document.body.cloneNode(true));
+
+    }
 
     // play again button
         // resets board
