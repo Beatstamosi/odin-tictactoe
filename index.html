@@ -24,14 +24,14 @@
                     <label for="playerTwo">Player Two</label>
                     <input type="text" name="playerTwo" id="playerTwo-input" placeholder="Enter Name">
                 </div>
-                <button type="submit">Start Game</button>
+                <button type="submit" id="start-game-button">Start Game</button>
             </form>
         </div>
     </div>
 
     <div class="game-view">
         <div class="column1">
-            <h2>Player One</h2>
+            <h2 id="player-name-1"></h2>
             <p>X</p>
             <p>Rounds Won: <span id="player-1-score"></span></p>
         </div>
@@ -40,19 +40,19 @@
                 <span>Player 1 Turn</span>
             </div>
             <div class="grid">
-                <button class="grid-cell top-left"></button>
-                <button class="grid-cell top-center">O</button>
-                <button class="grid-cell top-right">X</button>
-                <button class="grid-cell middle-left">X</button>
-                <button class="grid-cell middle-center">O</button>
-                <button class="grid-cell middle-right">O</button>
-                <button class="grid-cell bottom-left">O</button>
-                <button class="grid-cell bottom-center">X</button>
-                <button class="grid-cell bottom-right">X</button>
+                <button class="grid-cell top-left" data-row="0" data-column="0"></button>
+                <button class="grid-cell top-center" data-row="0" data-column="1"></button>
+                <button class="grid-cell top-right" data-row="0" data-column="2"></button>
+                <button class="grid-cell middle-left" data-row="1" data-column="0"></button>
+                <button class="grid-cell middle-center" data-row="1" data-column="1"></button>
+                <button class="grid-cell middle-right" data-row="1" data-column="2"></button>
+                <button class="grid-cell bottom-left" data-row="2" data-column="0"></button>
+                <button class="grid-cell bottom-center" data-row="2" data-column="1"></button>
+                <button class="grid-cell bottom-right" data-row="2" data-column="2"></button>
             </div>
         </div>
         <div class="column3">
-            <h2>Player Two</h2>
+            <h2 id="player-name-2"></h2>
             <p>O</p>
             <p>Rounds Won: <span id="player-2-score"></span></p>
         </div>

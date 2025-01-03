@@ -185,13 +185,36 @@ function GameController () {
 
 // ScreenController Object
 function ScreenController () {
-    // add datasets to buttons via html
+    const startGameButton = document.querySelector("#start-game-button");
+    const startView = document.querySelector(".start-view");
+    const gameView = document.querySelector(".game-view");
+    const displayGameInfo = document.querySelector(".display span");
+    const playerNameOneDisplay = document.querySelector("#player-name-1");
+    const playerNameTwoDisplay = document.querySelector("#player-name-2");
+    const playerOneInput = document.querySelector("#playerOne-input");
+    const playerTwoInput = document.querySelector("#playerTwo-input");
 
-    // handle start game button
-        // add eventlistener
-        // set display of start-view to none
-        // set display of game-view to grid(?)
-        // get player names and update value
+
+    function clickStartButton (e) {
+        e.preventDefault();
+        startView.style.display = "none";
+        gameView.style.display = "grid";
+
+        const playerOneName = playerOneInput.value != "" ? playerOneInput.value.toUpperCase() : undefined;
+        const playerTwoName = playerTwoInput.value != "" ? playerTwoInput.value.toUpperCase() : undefined;
+
+        const players = Players(playerOneName, playerTwoName);
+        const playersArray = players.getPlayers();
+
+        console.table(playersArray);
+
+        playerNameOneDisplay.textContent = playersArray[0].name;
+        playerNameTwoDisplay.textContent = playersArray[1].name;
+    }
+    startGameButton.addEventListener("click", (e) =>
+        clickStartButton(e));
+
+
 
 
     // update display for player turn
@@ -214,3 +237,5 @@ function ScreenController () {
 
 
 }
+
+ScreenController();

@@ -105,7 +105,7 @@
 
 .game-view {
     height: 100vh;
-    display: grid;
+    display: none;
     grid-template-columns: 1fr 4fr 1fr;
     justify-items: center;
     padding-top: 50px;
