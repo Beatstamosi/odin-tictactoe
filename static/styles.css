@@ -148,9 +148,9 @@
     margin-bottom: 50px;
 }
 
-.display span {
+/* .display span {
     color: var(--red);
-}
+} */
 
 .grid {
     display: grid;

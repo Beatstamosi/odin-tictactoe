@@ -39,7 +39,7 @@ const board = function() {
 
 
 // Players Object
-function Players (playerOne = "Player 1", playerTwo = "Player 2") {
+function Players (playerOne, playerTwo) {
     const players = [
         {
             name: playerOne,
@@ -60,9 +60,9 @@ function Players (playerOne = "Player 1", playerTwo = "Player 2") {
 
 
 // GameController Object
-function GameController () {
+function GameController (playerOne = "Player 1", playerTwo = "Player 2") {
     // initiate players
-    const players = Players().getPlayers();
+    const players = Players(playerOne, playerTwo).getPlayers();
 
     // set active player
     let activePlayer = players[0];
@@ -178,6 +178,7 @@ function GameController () {
 
     return {
         playRound,
+        getActivePlayer,
     }
         
 }
@@ -188,13 +189,15 @@ function ScreenController () {
     const startGameButton = document.querySelector("#start-game-button");
     const startView = document.querySelector(".start-view");
     const gameView = document.querySelector(".game-view");
-    const displayGameInfo = document.querySelector(".display span");
     const playerNameOneDisplay = document.querySelector("#player-name-1");
     const playerNameTwoDisplay = document.querySelector("#player-name-2");
     const playerOneInput = document.querySelector("#playerOne-input");
     const playerTwoInput = document.querySelector("#playerTwo-input");
+    const displayTurnInfo = document.querySelector(".display span");
 
+    let game;
 
+    // Start Game and set up display of player names
     function clickStartButton (e) {
         e.preventDefault();
         startView.style.display = "none";
@@ -203,37 +206,66 @@ function ScreenController () {
         const playerOneName = playerOneInput.value != "" ? playerOneInput.value.toUpperCase() : undefined;
         const playerTwoName = playerTwoInput.value != "" ? playerTwoInput.value.toUpperCase() : undefined;
 
-        const players = Players(playerOneName, playerTwoName);
-        const playersArray = players.getPlayers();
+        game = GameController(playerOneName, playerTwoName);
 
-        console.table(playersArray);
+        playerNameOneDisplay.textContent = playerOneName ? playerOneName : "PLAYER 1";
+        playerNameTwoDisplay.textContent = playerTwoName ? playerTwoName : "PLAYER 2";
 
-        playerNameOneDisplay.textContent = playersArray[0].name;
-        playerNameTwoDisplay.textContent = playersArray[1].name;
+        updateTurnDisplay();
     }
     startGameButton.addEventListener("click", (e) =>
         clickStartButton(e));
 
 
 
+    function updateTurnDisplay() {
+        // set name to player turns name
+        let activePlayer = game.getActivePlayer();
+        console.log(activePlayer);
+        displayTurnInfo.textContent = `${activePlayer.name}'s Turn`;
 
-    // update display for player turn
-        // get active player and update value
+        // set font-color to players color
+        if (activePlayer.token === "X") {
+            displayTurnInfo.style.color = "var(--red)";
+        } else {
+            displayTurnInfo.style.color = "var(--green)";
+        }
+    }
     
+    // make gridCells perform action on click
+    const buttons = Array.from(document.querySelectorAll(".grid-cell"));
+
+    buttons.forEach(button => {
+        button.addEventListener("click", (event) => {
+            gridCellClicked(button)
+        })
+    })
+
+    function gridCellClicked (button) {
+        // get dataset of button
+        let row = button.dataset.row;
+        let column = button.dataset.column;
+
+        button.textContent = game.getActivePlayer().token;
+        game.playRound(row, column);
+
+        updateTurnDisplay();
+
+        button.removeEventListener("click", gridCellClicked);
+    };
+
+
+
+
     // update winner
         // get game result and update value in display player turn
         // make buttons pulse 3 times
         // increase score "Rounds Won:"
         // pop up play again
+        // remove all button eventlisteners
 
     // play again button
         // resets board
-    
-
-    // add click handler to each button
-        // on button click set value to active players token
-        // run playRound();
-        // once clicked, remove event handler
 
 
 }
