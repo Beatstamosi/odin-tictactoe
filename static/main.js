@@ -27,12 +27,17 @@ const board = function() {
     const printBoard = function () {
         console.log(board.map(row => row.join("|")).join("\n-----\n"));
     }
+
+    const resetBoard = function () {
+        board = board.map(row => row.fill(0));
+    }
  
 
     return {
         getBoard,
         setToken,
         printBoard,
+        resetBoard,
     }
 }();
     
@@ -203,8 +208,12 @@ function ScreenController () {
     const displayTurnInfo = document.querySelector(".display span");
     const playerOneScore = document.querySelector("#player-1-score");
     const playerTwoScore = document.querySelector("#player-2-score");
+    const playAgainContainer = document.querySelector(".play-again-container");
+    const allGridButtons = Array.from(document.querySelectorAll(".grid-cell"));
+    const playAgainButton = document.querySelector("#play-again-button");
     let game;
     let winner;
+
 
     // Start Game and set up display of player names
     function clickStartButton (e) {
@@ -230,6 +239,20 @@ function ScreenController () {
         clickStartButton(e));
 
 
+    // set up play again button
+    playAgainButton.addEventListener("click", () => {
+        board.resetBoard();
+
+        playAgainButton.style.display = "none";
+
+        allGridButtons.forEach(button => {
+            button.disabled = false;
+            button.textContent = "";
+            button.classList.remove("clicked");
+        });
+    })
+
+
     function setFontColor (element) {
         const player = game.getActivePlayer().player;
         // set font-color to players color
@@ -240,6 +263,7 @@ function ScreenController () {
         }
     }
 
+
     function updateTurnDisplay() {
         // set name to player turns name
         let activePlayer = game.getActivePlayer();
@@ -249,22 +273,25 @@ function ScreenController () {
         setFontColor(displayTurnInfo);
     }
     
+
     // make gridCells perform action on click and hover
-    const buttons = Array.from(document.querySelectorAll(".grid-cell"));
+    function addGridCellsActions () {
+        allGridButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                gridCellClicked(button)
+            });
 
-    buttons.forEach(button => {
-        button.addEventListener("click", () => {
-            gridCellClicked(button)
-        });
+            button.addEventListener("mouseenter", () => {
+                showTokenOnHover(button);
+            });
 
-        button.addEventListener("mouseenter", () => {
-            showTokenOnHover(button);
-        });
-
-        button.addEventListener("mouseleave", () => {
-            hideTokenOnHoverOut(button);
-        });
-    })
+            button.addEventListener("mouseleave", () => {
+                hideTokenOnHoverOut(button);
+            });
+        })
+    };
+    addGridCellsActions();
+    
 
     function showTokenOnHover (button) {
         if (!button.classList.contains("clicked")) {
@@ -280,29 +307,32 @@ function ScreenController () {
     }
 
     function gridCellClicked (button) {
-        // to avoid hover function to trigger
-        button.classList.add("clicked");
+        if (!button.classList.contains("clicked")) {
+            // to avoid other functions to trigger
+            button.classList.add("clicked");
 
-        // get dataset of button
-        let row = button.dataset.row;
-        let column = button.dataset.column;
+            // get dataset of button
+            let row = button.dataset.row;
+            let column = button.dataset.column;
 
-        const token = game.getActivePlayer().token;
-        setFontColor(button);
+            const token = game.getActivePlayer().token;
+            setFontColor(button);
 
-        button.textContent = `${token}`;
-        winner = game.playRound(row, column);
-        
-        updateTurnDisplay();
+            button.textContent = `${token}`;
+            winner = game.playRound(row, column);
+            
+            updateTurnDisplay();
 
-        if (winner) {
-            displayWinner(winner);
-        }
+            if (winner) {
+                displayWinner(winner);
+            }
 
-        button.removeEventListener("mouseleave", hideTokenOnHoverOut);
-        button.removeEventListener("mouseenter", showTokenOnHover);
-        button.removeEventListener("click", gridCellClicked);
+            button.removeEventListener("mouseleave", hideTokenOnHoverOut);
+            button.removeEventListener("mouseenter", showTokenOnHover);
+            button.removeEventListener("click", gridCellClicked);
+            }
     };
+
 
     function displayWinner(winner) {
         let message;
@@ -318,32 +348,23 @@ function ScreenController () {
         }
 
         displayTurnInfo.textContent = message;
-        displayTurnInfo.style.fontSize = "50px";
         setFontColor(displayTurnInfo);
 
-        const allGridButtons = Array.from(document.querySelectorAll(".grid-cell"));
+        // turn off all eventlisteners
         allGridButtons.forEach(button => {
-            button.removeEventListener("mouseleave", hideTokenOnHoverOut);
-            button.removeEventListener("mouseenter", showTokenOnHover);
-            button.removeEventListener("click", gridCellClicked);
+            button.disabled = true;
         })
 
-        // createPlayAgainButton();
+        playAgain();
     }
 
-    // function createPlayAgainButton () {
-    //     // add button to body
-    //     const playAgainBtn = document.createElement("button");
-    //     playAgainBtn.id = "play-again";
-
-    //     // add to column3
-    //     document.querySelector(".column1").appendChild(playAgainBtn);
-
-    //     // add eventlistener
-    //     playAgainBtn.addEventListener("click", board.resetBoard);
-
-    //     // call ScreenController
-    // }
+    
+    function playAgain () {
+        setTimeout(() => {
+            playAgainContainer.style.display = "flex";
+            playAgainButton.style.display = "block";
+        }, 1000);
+    }
 }
 
 ScreenController();
