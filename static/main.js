@@ -250,6 +250,8 @@ function ScreenController () {
             button.textContent = "";
             button.classList.remove("clicked");
         });
+
+        updateTurnDisplay();
     })
 
 
@@ -267,7 +269,6 @@ function ScreenController () {
     function updateTurnDisplay() {
         // set name to player turns name
         let activePlayer = game.getActivePlayer();
-        console.log(activePlayer);
         displayTurnInfo.textContent = `${activePlayer.name}'s Turn`;
 
         setFontColor(displayTurnInfo);
